@@ -1,0 +1,49 @@
+@model IEnumerable<AcxiomCRM.Models.Opportunity>
+
+@{
+    ViewData["Title"] = "Opportunities Pipeline";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Sales Opportunities</h2>
+        <a asp-action="Create" class="btn btn-primary">+ New Opportunity</a>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Opportunity Name</th>
+                <th>Customer</th>
+                <th>Amount (₹)</th>
+                <th>Stage</th>
+                <th>Probability</th>
+                <th>Expected Close Date</th>
+                <th>Assigned To</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OpportunityName</td>
+                    <td>@(item.Customer?.CustomerName ?? "N/A")</td>
+                    <td>₹@item.Amount.ToString("N0")</td>
+                    <td><span class="badge bg-info text-dark">@item.Stage</span></td>
+                    <td>@item.Probability%</td>
+                    <td>@item.ExpectedCloseDate.ToString("yyyy-MM-dd")</td>
+                    <td>@(item.AssignedTo ?? "Unassigned")</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center text-muted">No opportunities found.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

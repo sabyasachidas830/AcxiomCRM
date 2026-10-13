@@ -1,0 +1,73 @@
+@model IEnumerable<AcxiomCRM.Models.Customer>
+
+@{
+    ViewData["Title"] = "Customer Management";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Customer Management</h2>
+        <a asp-action="Create" class="btn btn-primary">+ Add New Customer</a>
+    </div>
+
+    <!-- Search Box -->
+    <form method="get" asp-action="Index" class="row g-2 mb-3">
+        <div class="col-auto">
+            <input type="text" name="search" class="form-control" placeholder="Search by name, email, or company..." value="@Context.Request.Query["search"]" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-secondary">Search</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+        </div>
+    </form>
+
+    <table class="table table-striped table-hover table-bordered shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Created Date</th>
+                <th>Actions</th> <!-- Headers column for actions -->
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>@item.CustomerCode</strong></td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@(item.CompanyName ?? "-")</td>
+                    <td><span class="badge bg-success">@item.Status</span></td>
+                    <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
+                    
+                    <!-- HERE IS WHERE THE SNIPPET GOES -->
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-outline-primary">Edit</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <form asp-action="Delete" asp-route-id="@item.CustomerId" method="post" style="display:inline;" onsubmit="return confirm('Deactivate this customer?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Deactivate</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-muted">No matching customers found.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

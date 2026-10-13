@@ -1,0 +1,59 @@
+@model IEnumerable<AcxiomCRM.Models.FollowUp>
+
+@{
+    ViewData["Title"] = "Follow-Ups";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Follow-Up Activities</h2>
+        <a asp-action="Create" class="btn btn-primary">+ Schedule Follow-Up</a>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Remarks</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.FollowUpDate.ToString("yyyy-MM-dd")</td>
+                    <td><span class="badge bg-secondary">@item.FollowUpType</span></td>
+                    <td>@(item.Remarks ?? "-")</td>
+                    <td>
+                        <span class="badge @(item.Status == "Completed" ? "bg-success" : "bg-warning text-dark")">
+                            @item.Status
+                        </span>
+                    </td>
+                    <td>@(item.AssignedTo ?? "Unassigned")</td>
+                    <td>
+                        @if (item.Status != "Completed")
+                        {
+                            <form asp-action="Complete" asp-route-id="@item.FollowUpId" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-success">Mark Completed</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted">No follow-ups scheduled.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

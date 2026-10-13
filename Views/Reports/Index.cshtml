@@ -1,0 +1,54 @@
+
+@{
+    ViewData["Title"] = "CRM Reports";
+}
+
+<div class="container mt-4">
+    <h2>CRM Performance & Pipeline Reports</h2>
+    <hr />
+
+    <div class="row mb-4">
+        <!-- Lead Conversion Card -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Lead Conversion Rate</h5>
+                    <p class="text-muted">Ratio of captured leads converted to actual customers.</p>
+                    <div class="display-5 fw-bold text-success mb-2">@ViewBag.ConversionRate.ToString("0.0")%</div>
+                    <p>Total Leads: <strong>@ViewBag.TotalLeads</strong> | Converted: <strong>@ViewBag.ConvertedLeads</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline Summary Table -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Pipeline Stage Summary</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Opportunity Count</th>
+                        <th>Total Value (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (ViewBag.PipelineData != null)
+                {
+                    foreach (var item in ViewBag.PipelineData)
+                    {
+                        <tr>
+                            <td><strong>@item.Stage</strong></td>
+                            <td>@item.Count</td>
+                            <td>₹@item.TotalValue.ToString("N0")</td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

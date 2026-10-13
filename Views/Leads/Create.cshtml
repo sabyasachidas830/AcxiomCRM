@@ -1,0 +1,55 @@
+@model AcxiomCRM.Models.Lead
+
+@{
+    ViewData["Title"] = "Create Lead";
+}
+
+<div class="container mt-4" style="max-width: 650px;">
+    <h2>Create Lead</h2>
+    <hr />
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="LeadCode" class="form-label">Lead Code *</label>
+            <input asp-for="LeadCode" class="form-control" placeholder="LD-101" />
+            <span asp-validation-for="LeadCode" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="LeadName" class="form-label">Full Name *</label>
+            <input asp-for="LeadName" class="form-control" placeholder="Jane Smith" />
+            <span asp-validation-for="LeadName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email Address *</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="jane@example.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label">Phone (10 digits) *</label>
+            <input asp-for="Phone" class="form-control" placeholder="9876543210" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CompanyName" class="form-label">Company Name</label>
+            <input asp-for="CompanyName" class="form-control" placeholder="Global Logistics" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ExpectedValue" class="form-label">Expected Value (₹)</label>
+            <input asp-for="ExpectedValue" type="number" class="form-control" placeholder="25000" />
+            <span asp-validation-for="ExpectedValue" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Save Lead</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

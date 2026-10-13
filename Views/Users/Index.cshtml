@@ -1,0 +1,47 @@
+@model IEnumerable<AcxiomCRM.Models.UserRoleViewModel>
+
+@{
+    ViewData["Title"] = "User & Role Management";
+}
+
+<div class="container mt-4">
+    <h2>User & Role Administration</h2>
+    <p class="text-muted">Manage access levels for Admin, Manager, and Sales Executive.</p>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Current Role</th>
+                <th>Change Role</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td><strong>@user.UserName</strong></td>
+                <td>@user.Email</td>
+                <td>
+                    <span class="badge @(user.CurrentRole == "Admin" ? "bg-danger" : user.CurrentRole == "Manager" ? "bg-primary" : "bg-info text-dark")">
+                        @user.CurrentRole
+                    </span>
+                </td>
+                <td>
+                    <form asp-action="AssignRole" method="post" class="d-flex gap-2">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <select name="newRole" class="form-select form-select-sm" style="width: 170px;">
+                            <option value="Admin">Admin</option>
+                            <option value="Manager">Manager</option>
+                            <option value="SalesExecutive">SalesExecutive</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-dark">Update</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

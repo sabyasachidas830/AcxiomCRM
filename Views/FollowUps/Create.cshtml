@@ -1,0 +1,41 @@
+@model AcxiomCRM.Models.FollowUp
+
+@{
+    ViewData["Title"] = "Schedule Follow-Up";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2>Schedule Follow-Up</h2>
+    <hr />
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="FollowUpDate" class="form-label">Follow-Up Date *</label>
+            <input asp-for="FollowUpDate" type="date" class="form-control" />
+            <span asp-validation-for="FollowUpDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FollowUpType" class="form-label">Activity Type *</label>
+            <select asp-for="FollowUpType" class="form-select">
+                <option value="Call">Call</option>
+                <option value="Meeting">Meeting</option>
+                <option value="Email">Email</option>
+                <option value="Task">Task</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Remarks" class="form-label">Remarks / Subject</label>
+            <textarea asp-for="Remarks" class="form-control" rows="3" placeholder="Discuss product demo feedback"></textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Schedule</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
